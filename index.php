@@ -17,10 +17,15 @@
   $frequency = NumberWithCommas(exec("cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq") / 1000);
   $processor = str_replace("-compatible processor", "", explode(": ", exec("cat /proc/cpuinfo | grep -i Processor"))[1]);
   $cpu_temperature = round(exec("cat /sys/class/thermal/thermal_zone0/temp ") / 1000, 1);
-  //$RX = exec("ifconfig eth0 | grep 'RX bytes'| cut -d: -f2 | cut -d' ' -f1");
-  //$TX = exec("ifconfig eth0 | grep 'TX bytes'| cut -d: -f3 | cut -d' ' -f1");
   list($system, $host, $kernel) = split(" ", exec("uname -a"), 4);
   
+  //network
+  $net_rx = exec("cat /sys/class/net/eth0/statistics/rx_bytes");
+  $net_tx = exec("cat /sys/class/net/eth0/statistics/tx_bytes");
+  $total_net = (int)$net_rx + (int)$net_tx;
+  $percent_net_rx = round(($net_rx / $total_net) * 100);
+  $percent_net_tx = round(($net_tx / $total_net) * 100);
+
   //Uptime
   $uptime_array = explode(" ", exec("cat /proc/uptime"));
   $seconds = round($uptime_array[0], 0);
@@ -176,7 +181,7 @@
       {
         width:30px;
       }
-      div#bar1, div#bar2, div#bar3, div#bar4, div#bar5, div#bar6
+      div#bar1, div#bar2, div#bar3, div#bar4, div#bar5, div#bar6, div#bar8, div#bar9
       {
         height:12px;
         width:0px;
@@ -198,6 +203,8 @@
       div#bar4 { background-color:#87AFD7; }
       div#bar5 { background-color:#D7AFD7; }
       div#bar6 { background-color:#AFD7D7; }
+      div#bar9 { background-color:#F7F7AF; }
+      div#bar8 { background-color:#87AFD7; }
     </style>
     <script type="text/javascript">
       function updateText(objectId, text)
@@ -219,6 +226,12 @@
         echo "\n\t\t\t\tupdateText(\"cpuload\",\"$cpuload%\");";
         echo "\n\t\t\t\tupdateText(\"cpu_temperature\",\"$cpu_temperature\" + \"°C\");";
         echo "\n\t\t\t\tupdateText(\"uptime\",\"$uptime\");";
+
+        echo "\n\t\t\t\tupdateText(\"net_rx\",\"".NumberWithCommas($net_rx/1000)."\" + \" kB\");";
+        echo "\n\t\t\t\tupdateText(\"net_tx\",\"".NumberWithCommas($net_tx/1000)."\" + \" kB\");";
+        echo "\n\t\t\t\tupdateText(\"total_net\",\"".NumberWithCommas($total_net/1000)."\" + \" kB\");";
+        echo "\n\t\t\t\tupdateText(\"percent_net_rx\",\"$percent_net_rx%\");";
+        echo "\n\t\t\t\tupdateText(\"percent_net_tx\",\"$percent_net_tx%\");";
 
         echo "\n\t\t\t\tupdateText(\"total_mem\",\"$total_mem\" + \" kB\");";
         echo "\n\t\t\t\tupdateText(\"used_mem\",\"$used_mem\" + \" kB\");";
@@ -244,6 +257,9 @@
         document.getElementById("bar4").style.width = "<?php echo $percent_cach; ?>px";
         document.getElementById("bar5").style.width = "<?php echo $percent_swap; ?>px";
         document.getElementById("bar6").style.width = "<?php echo $percent_swap_free; ?>px";
+
+        document.getElementById("bar8").style.width = "<?php echo $percent_net_rx; ?>px";
+        document.getElementById("bar9").style.width = "<?php echo $percent_net_tx; ?>px";
       }
     </script>
   </head>
@@ -284,6 +300,27 @@
         <td colspan="2">Uptime</td>
         <td colspan="2" id="uptime"></td>
       </tr>
+      <tr>
+        <td colspan="4" class="darkbackground">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="head right">Network:</td>
+        <td colspan="2" class="head" id="total_net"></td>
+      </tr>
+      <tr>
+        <td class="column1">RX</td>
+        <td class="right" id="net_rx"></td>
+        <td class="column3"><div id="bar8">&nbsp;</div></td>
+        <td class="right column4" id="percent_net_rx"></td>
+      </tr>
+      <tr>
+        <td class="column1">TX</td>
+        <td class="right" id="net_tx"></td>
+        <td class="column3"><div id="bar9">&nbsp;</div></td>
+        <td class="right column4" id="percent_net_tx"></td>
+      </tr>
+
+
       <tr>
         <td colspan="4" class="darkbackground">&nbsp;</td>
       </tr>
