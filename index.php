@@ -13,7 +13,7 @@
     fputs($stdout, "\n" . $text);
   }
   
-  $current_time = exec("date +'%d %b %Y<br />%T %Z'");
+  $current_time = date('d M Y') ."<br />".date('G:H:s T');
   $frequency = NumberWithCommas(exec("cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq") / 1000);
   $processor = str_replace("-compatible processor", "", explode(": ", exec("cat /proc/cpuinfo | grep -i Processor"))[1]);
   $cpu_temperature = round(exec("cat /sys/class/thermal/thermal_zone0/temp ") / 1000, 1);
