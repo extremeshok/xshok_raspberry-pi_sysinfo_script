@@ -21,7 +21,12 @@ You need to have php Safe Mode disabled!
 
 TODO
 ====
-json output
-vnstat compatibility
-interface support
-bug fixes
+* json output
+* vnstat compatibility
+* load averages (0.01, 0.02, 0.05)
+* wan informarion
+* ip information
+* interface support
+* bug fixes
+* twitter support
+

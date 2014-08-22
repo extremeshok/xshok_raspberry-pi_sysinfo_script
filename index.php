@@ -111,7 +111,7 @@
   $count = 1;
   while ($count < sizeof($diskfree))
   {
-    list($drive[$count], $typex[$count], $size[$count], $used[$count], $avail[$count], $percent[$count], $mount[$count]) = split(" +", $diskfree[$count]);
+    list($drive[$count], $typex[$count], $size[$count], $used[$count], $avail[$count], $percent[$count], $mount[$count]) =  preg_split('/\s+/', $diskfree[$count]);
     $percent_part[$count] = str_replace( "%", "", $percent[$count]);
     $count++;
   }
