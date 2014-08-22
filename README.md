@@ -17,3 +17,11 @@ You need to have php Safe Mode disabled!
 * Uptime
 * RAM and Swap Usage
 * Disk Usage
+
+
+TODO
+====
+json output
+vnstat compatibility
+interface support
+bug fixes

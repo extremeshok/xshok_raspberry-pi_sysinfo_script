@@ -98,6 +98,8 @@
 	$free_swap = NumberWithCommas($free_swap);
 	$buffer_mem = NumberWithCommas($buffer_mem);
 	$cache_mem = NumberWithCommas($cache_mem);
+	$real_used_mem = $total_mem – ($free_mem + $buffer_mem + $cache_mem);
+	$real_percent_used = round(($real_percent_used / $total_mem) * 100);
 
 	//Disk space check
 	exec("df -T -l -BM -x tmpfs -x devtmpfs -x rootfs", $diskfree);
@@ -220,7 +222,9 @@
 
 				echo "\n\t\t\t\tupdateText(\"total_mem\",\"$total_mem\" + \" kB\");";
 				echo "\n\t\t\t\tupdateText(\"used_mem\",\"$used_mem\" + \" kB\");";
+				echo "\n\t\t\t\tupdateText(\"real_used_mem\",\"$real_used_mem\" + \" kB\");";
 				echo "\n\t\t\t\tupdateText(\"percent_used\",\"$percent_used%\");";
+				echo "\n\t\t\t\tupdateText(\"real_percent_used\",\"$real_percent_used%\");";
 				echo "\n\t\t\t\tupdateText(\"free_mem\",\"$free_mem\" + \" kB\");";
 				echo "\n\t\t\t\tupdateText(\"percent_free\",\"$percent_free%\");";
 				echo "\n\t\t\t\tupdateText(\"buffer_mem\",\"$buffer_mem\" + \" kB\");";
@@ -292,6 +296,12 @@
 				<td class="right" id="used_mem"></td>
 				<td class="column3"><div id="bar1">&nbsp;</div></td>
 				<td class="right column4" id="percent_used"></td>
+			</tr>
+			<tr>
+				<td class="column1">Real Used</td>
+				<td class="right" id="real_used_mem"></td>
+				<td class="column3"><div id="bar1">&nbsp;</div></td>
+				<td class="right column4" id="real_percent_used"></td>
 			</tr>
 			<tr>
 				<td>Free</td>
