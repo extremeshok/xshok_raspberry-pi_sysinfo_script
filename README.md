@@ -19,14 +19,3 @@ You need to have php Safe Mode disabled!
 * Disk Usage
 
 
-TODO
-====
-* json output
-* vnstat compatibility
-* load averages (0.01, 0.02, 0.05)
-* wan informarion
-* ip information
-* interface support
-* bug fixes
-* twitter support
-
